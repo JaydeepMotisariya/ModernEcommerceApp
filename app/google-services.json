@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "195310744751",
+    "project_id": "riseupmart",
+    "storage_bucket": "riseupmart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195310744751:android:e6bb618b3061b40130d05a",
+        "android_client_info": {
+          "package_name": "com.shopping.riseupmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195310744751-pokikgmg9kncivgk7j4pq5bbvdc6e4o2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGFvrlsxdPnylYPHCt4kfvpeFUgo7D2AA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195310744751-pokikgmg9kncivgk7j4pq5bbvdc6e4o2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
