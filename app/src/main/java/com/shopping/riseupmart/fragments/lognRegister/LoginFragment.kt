@@ -11,10 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.shopping.riseupmart.R
 import com.shopping.riseupmart.activities.ShoppingActivity
 import com.shopping.riseupmart.databinding.FragmentLoginBinding
 import com.shopping.riseupmart.databinding.FragmentRegisterBinding
+import com.shopping.riseupmart.dialog.setupBottomSheetDialog
 import com.shopping.riseupmart.utils.Resource
 import com.shopping.riseupmart.viewmodel.LoginViewModel
 import com.shopping.riseupmart.viewmodel.RegisterViewModel
@@ -50,6 +52,31 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 val password = edPasswordLogin.text.toString()
 
                 viewModel.login(email, password)
+            }
+        }
+
+        binding.tvForgotPasswordLogin.setOnClickListener {
+            setupBottomSheetDialog {
+                email -> viewModel.resetPassword(email)
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.resetPassword.collect{
+                when (it) {
+                    is Resource.Loading -> {
+
+                    }
+
+                    is Resource.Success -> {
+                     Snackbar.make(requireView(),"Reset link was to your email", Snackbar.LENGTH_LONG).show()
+                    }
+
+                    is Resource.Error -> {
+                        Snackbar.make(requireView(),"Error: ${it.message}", Snackbar.LENGTH_LONG).show()
+                    }
+
+                    else -> Unit
+                }
             }
         }
         lifecycleScope.launchWhenStarted {
