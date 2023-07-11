@@ -19,7 +19,7 @@ class BestDealsAdapter : RecyclerView.Adapter<BestDealsAdapter.BestDealsViewHold
                 product.offerPercentage?.let {
                     val remainingPricePercentage = 1f - it
                     val priceAfterOffer = remainingPricePercentage * product.price
-                    tvNewPrice.text = "$ ${String.format("%.2f",priceAfterOffer)}"
+                    tvNewPrice.text = "$ ${String.format("%.2f", priceAfterOffer)}"
                 }
                 tvOldPrice.text = "$ ${product.price}"
                 tvDealProductName.text = product.name
@@ -51,9 +51,16 @@ class BestDealsAdapter : RecyclerView.Adapter<BestDealsAdapter.BestDealsViewHold
     override fun onBindViewHolder(holder: BestDealsViewHolder, position: Int) {
         val product = differ.currentList[position]
         holder.bind(product)
+
+        holder.itemView.setOnClickListener {
+            onClick?.invoke(product)
+        }
+
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
+    var onClick: ((Product) -> Unit)? = null
 }

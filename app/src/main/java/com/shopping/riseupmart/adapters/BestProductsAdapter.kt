@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.shopping.riseupmart.data.Product
 import com.shopping.riseupmart.databinding.ProductRvItemBinding
 
-class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProductsViewHolder>() {
+class BestProductsAdapter : RecyclerView.Adapter<BestProductsAdapter.BestProductsViewHolder>() {
 
     inner class BestProductsViewHolder(private val binding: ProductRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -20,10 +20,10 @@ class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProducts
                 product.offerPercentage?.let {
                     val remainingPricePercentage = 1f - it
                     val priceAfterOffer = remainingPricePercentage * product.price
-                    tvNewPrice.text = "$ ${String.format("%.2f",priceAfterOffer)}"
+                    tvNewPrice.text = "$ ${String.format("%.2f", priceAfterOffer)}"
                     tvPrice.paintFlags = tvPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 }
-                if(product.offerPercentage == null)
+                if (product.offerPercentage == null)
                     tvNewPrice.visibility = View.INVISIBLE
 
                 Glide.with(itemView).load(product.images[0]).into(imgProduct)
@@ -58,9 +58,16 @@ class BestProductsAdapter: RecyclerView.Adapter<BestProductsAdapter.BestProducts
     override fun onBindViewHolder(holder: BestProductsViewHolder, position: Int) {
         val product = differ.currentList[position]
         holder.bind(product)
+
+        holder.itemView.setOnClickListener {
+            onClick?.invoke(product)
+        }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
+
+    var onClick: ((Product) -> Unit)? = null
+
 }

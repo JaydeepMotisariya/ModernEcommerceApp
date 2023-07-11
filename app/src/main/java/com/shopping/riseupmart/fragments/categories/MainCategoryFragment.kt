@@ -10,6 +10,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shopping.riseupmart.R
@@ -18,6 +19,7 @@ import com.shopping.riseupmart.adapters.BestProductsAdapter
 import com.shopping.riseupmart.adapters.SpecialProductsAdapter
 import com.shopping.riseupmart.databinding.FragmentMainCategoryBinding
 import com.shopping.riseupmart.utils.Resource
+import com.shopping.riseupmart.utils.showBottomNavigationView
 import com.shopping.riseupmart.viewmodel.MainCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -26,6 +28,7 @@ private val TAG = "MainCategoryFragment"
 
 @AndroidEntryPoint
 class MainCategoryFragment : Fragment(R.layout.fragment_main_category) {
+
     private lateinit var binding: FragmentMainCategoryBinding
     private lateinit var specialProductsAdapter: SpecialProductsAdapter
     private lateinit var bestDealsAdapter: BestDealsAdapter
@@ -47,6 +50,23 @@ class MainCategoryFragment : Fragment(R.layout.fragment_main_category) {
         setupSpecialProductsRv()
         setupBestDealsRv()
         setupBestProducts()
+
+        specialProductsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product", it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, b)
+        }
+
+        bestDealsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product", it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, b)
+        }
+
+        bestProductsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product", it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailsFragment, b)
+        }
+
+
         lifecycleScope.launchWhenStarted {
             viewModel.specialProducts.collectLatest {
                 when (it) {
@@ -104,13 +124,14 @@ class MainCategoryFragment : Fragment(R.layout.fragment_main_category) {
                         bestProductsAdapter.differ.submitList(it.data)
                         binding.bestProductsProgressbar.visibility = View.GONE
 
+
                     }
 
                     is Resource.Error -> {
-
                         Log.e(TAG, it.message.toString())
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         binding.bestProductsProgressbar.visibility = View.GONE
+
                     }
 
                     else -> Unit
@@ -159,6 +180,12 @@ class MainCategoryFragment : Fragment(R.layout.fragment_main_category) {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = specialProductsAdapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        showBottomNavigationView()
     }
 
 }
